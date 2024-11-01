@@ -1,42 +1,56 @@
-let boxCount = 0;
+let boxId = 0;
+let simulationInterval;
 
 function startSimulation() {
     const simulationContainer = document.getElementById('simulation-container');
-    simulationContainer.innerHTML = '';  // Limpa as caixas anteriores
-    boxCount = 0;
+    const startButton = document.getElementById('startButton');
 
-    setInterval(() => {
-        // Cria uma nova caixa
-        const box = document.createElement('div');
-        box.classList.add('box');
-        box.style.left = '0px';
+    startButton.disabled = true;  // Evita múltiplas simulações
+    boxId = 0;
+
+    simulationInterval = setInterval(() => {
+        const box = createBoxElement();
         simulationContainer.appendChild(box);
 
         const startTime = new Date();
-
-        // Anima a caixa para passar pela tela
-        let position = 0;
-        const interval = setInterval(() => {
-            if (position >= 300) {
-                clearInterval(interval);
-                simulationContainer.removeChild(box);
-
-                // Registra o tempo de passagem da caixa
-                const endTime = new Date();
-                const passageTime = ((endTime - startTime) / 1000).toFixed(2);
-                addDataToTable(passageTime);
-            } else {
-                position += 2;
-                box.style.left = `${position}px`;
-            }
-        }, 20);
-    }, 1000);  // Adiciona uma nova caixa a cada segundo
+        animateBox(box, startTime);
+    }, 1000);  // Intervalo de 1 segundo para cada caixa
 }
 
-function addDataToTable(time) {
-    boxCount++;
+function createBoxElement() {
+    const box = document.createElement('div');
+    box.classList.add('box');
+    box.id = `box-${++boxId}`;
+    box.style.left = '0px';
+    return box;
+}
+
+function animateBox(box, startTime) {
+    const simulationContainer = document.getElementById('simulation-container');
+    const containerWidth = simulationContainer.offsetWidth;
+
+    let position = 0;
+    const interval = setInterval(() => {
+        if (position >= containerWidth) {
+            clearInterval(interval);
+            simulationContainer.removeChild(box);
+
+            const endTime = new Date();
+            const passageTime = ((endTime - startTime) / 1000).toFixed(2);
+            addDataToTable(box.id, endTime, passageTime);
+        } else {
+            position += 5;
+            box.style.left = `${position}px`;
+        }
+    }, 20);
+}
+
+function addDataToTable(id, endTime, passageTime) {
     const tableBody = document.querySelector('#data-table tbody');
     const row = document.createElement('tr');
-    row.innerHTML = `<td>Caixa ${boxCount}</td><td>${time} s</td>`;
+
+    const formattedTime = endTime.toLocaleTimeString('pt-BR', { hour12: false });
+    row.innerHTML = `<td>${id}</td><td>${formattedTime}</td><td>${passageTime}</td>`;
+
     tableBody.appendChild(row);
 }
