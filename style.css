@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,22 +15,21 @@ body {
 
 .container {
     width: 90%;
-    max-width: 1000px;
-    background: #fff;
+    max-width: 800px;
+    text-align: center;
+    background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    font-size: 1.8em;
     color: #333;
+    font-size: 1.8em;
     margin-bottom: 20px;
-    text-align: center;
 }
 
 .controls {
-    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -39,11 +38,10 @@ button {
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 1em;
     cursor: pointer;
     border-radius: 5px;
     margin: 0 10px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:disabled {
@@ -53,6 +51,7 @@ button:disabled {
 
 button:hover:not(:disabled) {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 #simulation-container {
@@ -76,27 +75,32 @@ button:hover:not(:disabled) {
     top: 50%;
     transform: translateY(-50%);
     border-radius: 4px;
-    animation: slide 3s linear infinite;
+    animation: slide 3s linear forwards;
 }
 
 @keyframes slide {
-    from { left: 0; }
+    from { left: -50px; }
     to { left: 100%; }
 }
 
 .data-section {
     margin-top: 20px;
-    text-align: center;
+    text-align: left;
+}
+
+.data-section h2 {
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
 #data-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
 #data-table th, #data-table td {
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ddd;
     text-align: center;
 }
@@ -104,13 +108,9 @@ button:hover:not(:disabled) {
 #data-table th {
     background-color: #007bff;
     color: white;
+    font-weight: bold;
 }
 
 #data-table tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-.chart-section {
-    margin-top: 30px;
-    text-align: center;
 }
