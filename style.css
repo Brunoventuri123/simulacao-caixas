@@ -1,73 +1,108 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f3f3f3;
-    margin: 0;
-    padding: 20px;
+    min-height: 100vh;
+    background-color: #f4f6f9;
 }
 
 .container {
+    width: 90%;
+    max-width: 900px;
     text-align: center;
-    width: 80%;
-    max-width: 800px;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
 }
 
-h1 {
+header h1 {
     color: #333;
-}
-
-#startButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    font-size: 1.8em;
     margin-bottom: 20px;
 }
 
-#startButton:hover {
-    background-color: #45a049;
+.controls {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0056b3;
 }
 
 #simulation-container {
     position: relative;
     width: 100%;
     height: 200px;
-    border: 2px solid #333;
-    background-color: #fff;
+    border: 2px dashed #007bff;
+    background-color: #e9f5ff;
     overflow: hidden;
     margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .box {
-    width: 30px;
-    height: 30px;
-    background-color: #4CAF50;
+    width: 40px;
+    height: 40px;
+    background-color: #28a745;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     border-radius: 4px;
+    animation: slide 3s linear infinite;
+}
+
+@keyframes slide {
+    from { left: 0; }
+    to { left: 100%; }
+}
+
+.data-section {
+    margin-top: 20px;
 }
 
 #data-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
 }
 
 #data-table th, #data-table td {
-    border: 1px solid #ddd;
     padding: 12px;
+    border: 1px solid #ddd;
     text-align: center;
 }
 
 #data-table th {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
+    font-weight: bold;
 }
 
 #data-table tr:nth-child(even) {
