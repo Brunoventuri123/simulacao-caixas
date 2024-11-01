@@ -1,16 +1,15 @@
-let boxId = 0;
+let itemId = 0;
 let simulationInterval;
+let totalCount = 0;
+const productionData = [];
 
 function startSimulation() {
-    const startButton = document.getElementById('startButton');
-    const stopButton = document.getElementById('stopButton');
-    
-    startButton.disabled = true;
-    stopButton.disabled = false;
+    document.getElementById('startButton').disabled = true;
+    document.getElementById('stopButton').disabled = false;
 
     simulationInterval = setInterval(() => {
-        createAndAnimateBox();
-    }, 1000);  // Cria uma nova caixa a cada segundo
+        createAndAnimateItem();
+    }, 1000);
 }
 
 function stopSimulation() {
@@ -19,28 +18,61 @@ function stopSimulation() {
     document.getElementById('stopButton').disabled = true;
 }
 
-function createAndAnimateBox() {
+function createAndAnimateItem() {
     const simulationContainer = document.getElementById('simulation-container');
-    const box = document.createElement('div');
-    box.classList.add('box');
-    boxId += 1;
-    box.setAttribute('data-id', `Caixa-${boxId}`);
+    const item = document.createElement('div');
+    item.classList.add('box');
+    itemId += 1;
+    item.setAttribute('data-id', `Item-${itemId}`);
     
-    simulationContainer.appendChild(box);
+    simulationContainer.appendChild(item);
+    totalCount += 1;
     const passageTime = new Date();
-    recordBoxData(boxId, passageTime);
+    recordItemData(itemId, passageTime, totalCount);
     
-    // Remove a caixa da tela após a animação
-    box.addEventListener('animationend', () => {
-        simulationContainer.removeChild(box);
+    item.addEventListener('animationend', () => {
+        simulationContainer.removeChild(item);
     });
 }
 
-function recordBoxData(id, passageTime) {
+function recordItemData(id, passageTime, total) {
     const formattedTime = passageTime.toLocaleTimeString('pt-BR', { hour12: false });
     const tableBody = document.querySelector('#data-table tbody');
     const row = document.createElement('tr');
     
-    row.innerHTML = `<td>Caixa-${id}</td><td>${formattedTime}</td>`;
+    row.innerHTML = `<td>Item-${id}</td><td>${formattedTime}</td><td>${total}</td>`;
     tableBody.appendChild(row);
+
+    productionData.push(total);
+    updateChart();
 }
+
+function updateChart() {
+    const chart = Chart.getChart("productionChart");
+    if (chart) {
+        chart.data.labels.push(new Date().toLocaleTimeString('pt-BR', { hour12: false }));
+        chart.data.datasets[0].data.push(totalCount);
+        chart.update();
+    }
+}
+
+const ctx = document.getElementById('productionChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Total de Itens Produzidos',
+            data: [],
+            borderColor: '#007bff',
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: { display: true },
+            y: { beginAtZero: true }
+        }
+    }
+});
