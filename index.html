@@ -3,48 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação de Produção Automatizada</title>
+    <title>Simulação STAR LUXO</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Simulação de Controle de Produção - STAR LUXO</h1>
+        </header>
+        
+        <div class="controls">
+            <button id="startButton" onclick="startSimulation()">Iniciar Simulação</button>
+            <button id="stopButton" onclick="stopSimulation()" disabled>Parar Simulação</button>
+        </div>
 
-<div class="container">
-    <header>
-        <h1>Sistema de Contagem Automatizada - STAR LUXO</h1>
-    </header>
-    
-    <div class="controls">
-        <button id="startButton" onclick="startSimulation()">Iniciar Simulação</button>
-        <button id="stopButton" onclick="stopSimulation()" disabled>Parar Simulação</button>
+        <div id="simulation-container">
+            <!-- Itens simulados passarão aqui -->
+        </div>
+
+        <div class="data-section">
+            <h2>Dados da Simulação</h2>
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>ID do Item</th>
+                        <th>Horário de Passagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados dos itens simulados serão adicionados aqui -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div id="simulation-container">
-        <!-- Itens simulados passarão aqui -->
-    </div>
-
-    <div class="data-section">
-        <h2>Relatório de Produção</h2>
-        <table id="data-table">
-            <thead>
-                <tr>
-                    <th>ID do Item</th>
-                    <th>Horário de Passagem</th>
-                    <th>Total Acumulado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados dos itens serão inseridos aqui -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="chart-section">
-        <h2>Métricas de Produção</h2>
-        <canvas id="productionChart"></canvas>
-    </div>
-</div>
-
-<script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
