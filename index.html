@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação de Controle de Produção</title>
+    <title>Simulação de Contagem Automatizada</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Simulação de Controle de Produção</h1>
-    <button id="startButton" onclick="startSimulation()">Iniciar Simulação</button>
-
-    <div id="simulation-container">
-        <!-- Caixas aparecerão aqui -->
+    <header>
+        <h1>Simulação de Contagem Automatizada</h1>
+    </header>
+    
+    <div class="controls">
+        <button id="startButton" onclick="startSimulation()">Iniciar Simulação</button>
+        <button id="stopButton" onclick="stopSimulation()" disabled>Parar Simulação</button>
     </div>
 
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>ID da Caixa</th>
-                <th>Horário de Passagem</th>
-                <th>Tempo de Passagem (s)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados das caixas serão adicionados aqui -->
-        </tbody>
-    </table>
+    <div id="simulation-container">
+        <!-- As caixas passarão aqui -->
+    </div>
+
+    <div class="data-section">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>ID da Caixa</th>
+                    <th>Horário de Passagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados das caixas serão adicionados aqui -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="script.js"></script>
 </body>
 </html>
-
