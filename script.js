@@ -1,29 +1,38 @@
-let codigoAtual = 0;
-let ultimoTimestamp = null; // Armazena o timestamp da última entrada de caixa
+// script.js
+let ws;
+let playerName;
 
-function doGet() {
-    return HtmlService.createHtmlOutputFromFile('Index');
+function joinGame() {
+    playerName = document.getElementById("username").value;
+    if (!playerName) {
+        alert("Por favor, insira seu nome!");
+        return;
+    }
+
+    ws = new WebSocket("ws://localhost:8080");
+
+    ws.onopen = () => {
+        ws.send(JSON.stringify({ type: "join", name: playerName }));
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.type === "tema") {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("temaAtual").innerText = data.tema;
+        } else if (data.type === "fim") {
+            document.getElementById("resultados").innerHTML = `<h3>Fim do Jogo! Pontuações:</h3>` +
+                Object.entries(data.pontuacao).map(([name, pontos]) => `<p>${name}: ${pontos} pontos</p>`).join('');
+        }
+    };
 }
 
-function addRowToSheet() {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    codigoAtual++; // Incrementa o código da caixa
-    const timestamp = new Date();
-    
-    // Calcula o tempo decorrido em segundos desde a última caixa
-    let tempoEntreCaixas = ultimoTimestamp ? (timestamp - ultimoTimestamp) / 1000 : 0;
-    ultimoTimestamp = timestamp;
-
-    // Adiciona uma nova linha com código, data e hora atual, e o tempo entre caixas
-    sheet.appendRow([codigoAtual, timestamp, tempoEntreCaixas > 0 ? tempoEntreCaixas.toFixed(2) + ' s' : 'Primeira Caixa']);
-    return `Caixa ${codigoAtual} registrada!`;
-}
-
-function resetCodes() {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    sheet.clear(); // Limpa todos os dados da planilha
-    sheet.appendRow(['Código', 'Data e Hora', 'Tempo entre Caixas']); // Adiciona cabeçalho
-    codigoAtual = 0; // Reinicia o código para 0
-    ultimoTimestamp = null; // Reseta o timestamp
-    return 'Códigos reiniciados com sucesso!';
+function enviarPalavra() {
+    const palavra = document.getElementById("palavra").value;
+    if (palavra) {
+        ws.send(JSON.stringify({ type: "palavra", name: playerName, palavra }));
+        document.getElementById("palavra").value = "";
+    }
 }
