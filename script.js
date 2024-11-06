@@ -1,49 +1,29 @@
-let itemId = 0;
-let simulationInterval;
+let codigoAtual = 0;
+let ultimoTimestamp = null; // Armazena o timestamp da última entrada de caixa
 
-function startSimulation() {
-    document.getElementById('startButton').disabled = true;
-    document.getElementById('stopButton').disabled = false;
-
-    simulationInterval = setInterval(() => {
-        createAndAnimateItem();
-    }, 1000);  // Cria um novo item a cada segundo
+function doGet() {
+    return HtmlService.createHtmlOutputFromFile('Index');
 }
 
-function stopSimulation() {
-    clearInterval(simulationInterval);
-    document.getElementById('startButton').disabled = false;
-    document.getElementById('stopButton').disabled = true;
+function addRowToSheet() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    codigoAtual++; // Incrementa o código da caixa
+    const timestamp = new Date();
+    
+    // Calcula o tempo decorrido em segundos desde a última caixa
+    let tempoEntreCaixas = ultimoTimestamp ? (timestamp - ultimoTimestamp) / 1000 : 0;
+    ultimoTimestamp = timestamp;
+
+    // Adiciona uma nova linha com código, data e hora atual, e o tempo entre caixas
+    sheet.appendRow([codigoAtual, timestamp, tempoEntreCaixas > 0 ? tempoEntreCaixas.toFixed(2) + ' s' : 'Primeira Caixa']);
+    return `Caixa ${codigoAtual} registrada!`;
 }
 
-function createAndAnimateItem() {
-    const simulationContainer = document.getElementById('simulation-container');
-    const item = document.createElement('div');
-    item.classList.add('box');
-    itemId += 1;
-    item.setAttribute('data-id', `Item-${itemId}`);
-    
-    simulationContainer.appendChild(item);
-    const passageTime = new Date();
-    recordItemData(itemId, passageTime);
-    
-    // Remove o item da tela após a animação
-    item.addEventListener('animationend', () => {
-        simulationContainer.removeChild(item);
-    });
-}
-
-function recordItemData(id, passageTime) {
-    const formattedTime = passageTime.toLocaleTimeString('pt-BR', { hour12: false });
-    const tableBody = document.querySelector('#data-table tbody');
-    const row = document.createElement('tr');
-    
-    row.innerHTML = `<td>Item-${id}</td><td>${formattedTime}</td>`;
-    
-    // Limita o número de linhas na tabela para as últimas 10 entradas
-    if (tableBody.children.length >= 10) {
-        tableBody.removeChild(tableBody.firstChild);
-    }
-
-    tableBody.appendChild(row);
+function resetCodes() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    sheet.clear(); // Limpa todos os dados da planilha
+    sheet.appendRow(['Código', 'Data e Hora', 'Tempo entre Caixas']); // Adiciona cabeçalho
+    codigoAtual = 0; // Reinicia o código para 0
+    ultimoTimestamp = null; // Reseta o timestamp
+    return 'Códigos reiniciados com sucesso!';
 }
