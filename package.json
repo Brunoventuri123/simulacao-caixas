@@ -1,1 +1,12 @@
+{
+  "name": "JogoTemaMultiplayer",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "ws": "^8.2.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
 
