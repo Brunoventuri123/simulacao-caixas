@@ -1,42 +1,82 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação STAR LUXO</title>
-    <link rel="stylesheet" href="style.css">
+    <base target="_top">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .response {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .timestamp {
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Simulação de Controle de Produção - STAR LUXO</h1>
-        </header>
-        
-        <div class="controls">
-            <button id="startButton" onclick="startSimulation()">Iniciar Simulação</button>
-            <button id="stopButton" onclick="stopSimulation()" disabled>Parar Simulação</button>
-        </div>
-
-        <div id="simulation-container">
-            <!-- Itens simulados passarão aqui -->
-        </div>
-
-        <div class="data-section">
-            <h2>Dados da Simulação</h2>
-            <table id="data-table">
-                <thead>
-                    <tr>
-                        <th>ID do Item</th>
-                        <th>Horário de Passagem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Dados dos itens simulados serão adicionados aqui -->
-                </tbody>
-            </table>
-        </div>
+    <h1>Controle de Caixas - STAR LUXO</h1>
+    
+    <div class="button-group">
+        <button onclick="sendData()">Registrar Caixa</button>
+        <button onclick="resetCodes()">Reiniciar Contagem</button>
     </div>
+    
+    <div class="response" id="responseMessage"></div>
+    <div class="timestamp" id="timestampMessage"></div>
 
-    <script src="script.js"></script>
+    <script>
+        function sendData() {
+            google.script.run.withSuccessHandler(function(response) {
+                document.getElementById('responseMessage').innerText = response; // Exibe o status da caixa registrada
+                const currentTime = new Date();
+                document.getElementById('timestampMessage').innerText = `Última Caixa: ${currentTime.toLocaleTimeString()}`; // Mostra o horário
+            }).addRowToSheet();
+        }
+
+        function resetCodes() {
+            google.script.run.withSuccessHandler(function(response) {
+                document.getElementById('responseMessage').innerText = response; // Exibe mensagem de reinício
+                document.getElementById('timestampMessage').innerText = ""; // Limpa o horário
+            }).resetCodes();
+        }
+    </script>
 </body>
 </html>
