@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Caixas - STAR LUXO</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Jogo Multiplayer de Temas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Controle de Caixas - STAR LUXO</h1>
-    
-    <div class="button-group">
-        <button onclick="sendData()">Registrar Caixa</button>
-        <button onclick="resetCodes()">Reiniciar Contagem</button>
+    <h1>Jogo de Temas</h1>
+    <div id="login">
+        <input type="text" id="username" placeholder="Digite seu nome">
+        <button onclick="joinGame()">Entrar no Jogo</button>
     </div>
-    
-    <div class="response" id="responseMessage"></div>
-    <div class="timestamp" id="timestampMessage"></div>
+    <div id="game" style="display: none;">
+        <h2>Tema: <span id="temaAtual"></span></h2>
+        <input type="text" id="palavra" placeholder="Digite uma palavra">
+        <button onclick="enviarPalavra()">Enviar</button>
+        <div id="resultados"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
